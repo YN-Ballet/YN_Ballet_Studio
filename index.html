@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>와이엔발레 | YN Ballet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #3d5068;
+      --navy-deep: #2c3d50;
+      --navy-light: #4e637a;
+      --gold: #d4a843;
+      --gold-light: #e8c06a;
+      --gold-pale: rgba(212,168,67,0.15);
+      --ivory: #faf8f3;
+      --white: #ffffff;
+      --text: #1e2a35;
+      --muted: #7a8e9e;
+      --border: rgba(212,168,67,0.3);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ivory);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--navy-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+    /* HEADER */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(44,61,80,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(212,168,67,0.2);
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 14px; }
+    .logo-text {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.1rem; font-weight: 400;
+      color: var(--gold); letter-spacing: 0.08em; line-height: 1.2;
+    }
+    .logo-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.62rem; letter-spacing: 0.35em;
+      color: rgba(212,168,67,0.55); text-transform: uppercase; display: block;
+    }
+    nav { display: flex; align-items: center; gap: 36px; }
+    nav a {
+      font-size: 0.7rem; font-weight: 300; letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.6); text-decoration: none;
+      text-transform: uppercase; transition: color 0.3s; position: relative;
+    }
+    nav a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--gold);
+      transform: scaleX(0); transition: transform 0.3s;
+    }
+    nav a:hover { color: var(--gold); }
+    nav a:hover::after { transform: scaleX(1); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: var(--navy-deep);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; text-align: center;
+      padding: 140px 24px 100px; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 110%, rgba(212,168,67,0.13) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 80% 20%, rgba(78,99,122,0.5) 0%, transparent 60%);
+    }
+    .hero-pattern {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(212,168,67,0.07) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero-line {
+      position: absolute;
+      background: linear-gradient(to right, transparent, rgba(212,168,67,0.25), transparent);
+      height: 1px; width: 60%; left: 20%;
+    }
+    .hero-line.top { top: 18%; }
+    .hero-line.bottom { bottom: 18%; }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-eyebrow {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 1rem; letter-spacing: 0.45em; color: var(--gold);
+      margin-bottom: 36px; opacity: 0; animation: fadeUp 1s 0.3s forwards;
+    }
+    .hero-logo-img {
+      width: 160px; margin: 0 auto 44px; display: block;
+      filter: drop-shadow(0 0 40px rgba(212,168,67,0.35));
+      opacity: 0; animation: fadeUp 1s 0.5s forwards;
+    }
+    .hero-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 300;
+      color: var(--gold); letter-spacing: 0.15em; line-height: 1;
+      margin-bottom: 16px; opacity: 0; animation: fadeUp 1s 0.7s forwards;
+    }
+    .hero-title-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.9rem, 2vw, 1.2rem); font-weight: 300;
+      letter-spacing: 0.6em; color: rgba(212,168,67,0.5);
+      text-transform: uppercase; margin-bottom: 60px;
+      opacity: 0; animation: fadeUp 1s 0.9s forwards;
+    }
+    .hero-desc {
+      font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 300;
+      color: rgba(255,255,255,0.55); line-height: 2.2; letter-spacing: 0.05em;
+      max-width: 440px; margin: 0 auto 64px;
+      opacity: 0; animation: fadeUp 1s 1.1s forwards;
+    }
+    .hero-cta {
+      display: inline-block; padding: 15px 48px;
+      border: 1px solid var(--gold); color: var(--gold);
+      text-decoration: none; font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; letter-spacing: 0.3em; transition: all 0.4s;
+      opacity: 0; animation: fadeUp 1s 1.3s forwards;
+      position: relative; overflow: hidden;
+    }
+    .hero-cta::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s; z-index: -1;
+    }
+    .hero-cta:hover { color: var(--navy-deep); }
+    .hero-cta:hover::before { transform: scaleX(1); }
+
+    .scroll-hint {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeUp 1s 1.6s forwards;
+    }
+    .scroll-hint span { font-size: 0.58rem; letter-spacing: 0.3em; color: rgba(212,168,67,0.45); text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(212,168,67,0.5), transparent); animation: scrollPulse 2s infinite; }
+
+    /* SECTION BASE */
+    section { padding: 120px 24px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 0.85rem; letter-spacing: 0.4em; color: var(--gold);
+      text-transform: uppercase; display: block; margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300;
+      color: var(--navy-deep); letter-spacing: 0.08em; line-height: 1.3; margin-bottom: 20px;
+    }
+    .section-divider { width: 60px; height: 1px; background: linear-gradient(to right, var(--gold), transparent); margin-bottom: 48px; }
+
+    /* ABOUT */
+    .about { background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-visual { display: flex; align-items: center; justify-content: center; }
+    .about-circle {
+      width: 320px; height: 320px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,67,0.08) 0%, rgba(44,61,80,0.04) 70%);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .about-circle::before, .about-circle::after {
+      content: ''; position: absolute; border-radius: 50%; border: 1px solid var(--border);
+    }
+    .about-circle::before { inset: 20px; }
+    .about-circle::after { inset: 40px; }
+    .about-circle-logo { width: 140px; filter: drop-shadow(0 0 20px rgba(212,168,67,0.2)); }
+    .about-text p { font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 300; line-height: 2.2; color: #4a5a68; margin-bottom: 20px; }
+    .about-values { display: flex; gap: 32px; margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(44,61,80,0.08); }
+    .value-item { text-align: center; flex: 1; }
+    .value-num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--gold); display: block; line-height: 1; }
+    .value-label { font-size: 0.72rem; letter-spacing: 0.15em; color: var(--muted); margin-top: 6px; display: block; }
+
+    /* CLASSES */
+    .classes { background: var(--navy-deep); }
+    .classes .section-title { color: var(--gold-light); }
+    .class-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+    .class-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(212,168,67,0.1);
+      padding: 48px 36px; position: relative; overflow: hidden; transition: all 0.4s; cursor: default;
+    }
+    .class-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, var(--gold), var(--gold-light));
+      transform: scaleX(0); transition: transform 0.4s;
+    }
+    .class-card:hover { background: rgba(212,168,67,0.06); transform: translateY(-4px); }
+    .class-card:hover::after { transform: scaleX(1); }
+    .class-num { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; color: rgba(212,168,67,0.12); line-height: 1; margin-bottom: 20px; }
+    .class-name { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 400; color: var(--gold-light); margin-bottom: 6px; letter-spacing: 0.05em; }
+    .class-name-en { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.82rem; color: rgba(212,168,67,0.45); letter-spacing: 0.2em; margin-bottom: 20px; display: block; }
+    .class-desc { font-size: 0.82rem; line-height: 1.9; color: rgba(255,255,255,0.45); margin-bottom: 28px; }
+    .class-tag { display: inline-block; padding: 4px 12px; border: 1px solid rgba(212,168,67,0.25); font-size: 0.68rem; letter-spacing: 0.12em; color: rgba(212,168,67,0.65); margin: 3px 3px 3px 0; }
+
+    /* SCHEDULE */
+    .schedule { background: var(--ivory); }
+    .schedule-table-wrap { overflow-x: auto; margin-top: 48px; border: 1px solid var(--border); }
+    .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    .schedule-table th {
+      background: var(--navy-deep); color: var(--gold);
+      font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 0.2em;
+      padding: 18px 20px; text-align: center; font-weight: 400; border: 1px solid rgba(212,168,67,0.2);
+    }
+    .schedule-table td {
+      padding: 16px 20px; text-align: center; font-size: 0.82rem;
+      border: 1px solid rgba(44,61,80,0.08); color: #4a5a68;
+      font-family: 'Noto Serif KR', serif; font-weight: 300;
+      background: var(--white); transition: background 0.2s;
+    }
+    .schedule-table tr:hover td { background: rgba(212,168,67,0.04); }
+    .schedule-table td.time { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--navy-deep); font-weight: 600; white-space: nowrap; }
+    .badge { display: inline-block; padding: 4px 12px; font-size: 0.72rem; letter-spacing: 0.08em; margin: 2px; }
+    .badge.navy { background: var(--navy-deep); color: var(--gold-light); }
+    .badge.soft { background: rgba(44,61,80,0.08); color: var(--navy); }
+    .badge.gold { background: rgba(212,168,67,0.12); color: #7a5c10; }
+
+    /* INSTRUCTOR */
+    .instructor { background: var(--navy-deep); }
+    .instructor .section-title { color: var(--gold-light); }
+    .instructor-layout { display: grid; grid-template-columns: 280px 1fr; gap: 72px; align-items: start; margin-top: 56px; }
+    .instructor-portrait {
+      width: 280px; height: 360px;
+      background: rgba(212,168,67,0.06); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      color: rgba(212,168,67,0.35); font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 0.85rem; letter-spacing: 0.1em;
+      position: relative;
+    }
+    .instructor-portrait::after {
+      content: ''; position: absolute; bottom: -10px; right: -10px;
+      width: 100%; height: 100%; border: 1px solid rgba(212,168,67,0.12);
+    }
+    .instructor-info h3 { font-family: 'Noto Serif KR', serif; font-size: 2rem; font-weight: 300; color: var(--gold-light); letter-spacing: 0.1em; margin-bottom: 6px; }
+    .instructor-info .role { font-family: 'Cormorant Garamond', serif; font-style: italic; color: rgba(212,168,67,0.5); letter-spacing: 0.2em; font-size: 0.9rem; margin-bottom: 36px; display: block; }
+    .career-list { list-style: none; }
+    .career-list li { font-size: 0.87rem; color: rgba(255,255,255,0.55); padding: 12px 0; border-bottom: 1px solid rgba(212,168,67,0.1); display: flex; align-items: baseline; gap: 16px; line-height: 1.6; }
+    .career-list li::before { content: '—'; color: var(--gold); flex-shrink: 0; font-family: 'Cormorant Garamond', serif; }
+
+    /* LOCATION */
+    .location { background: var(--white); }
+    .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .map-placeholder {
+      width: 100%; height: 340px;
+      background: linear-gradient(135deg, rgba(44,61,80,0.05) 0%, rgba(212,168,67,0.04) 100%);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      color: var(--muted); font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 0.9rem; letter-spacing: 0.1em; position: relative;
+    }
+    .map-placeholder::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(44,61,80,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(44,61,80,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .map-pin { font-size: 2.5rem; position: relative; z-index: 1; }
+    .map-label-txt { position: relative; z-index: 1; }
+    .info-list { list-style: none; }
+    .info-list li { display: flex; align-items: flex-start; gap: 20px; padding: 20px 0; border-bottom: 1px solid rgba(44,61,80,0.08); }
+    .info-icon { width: 36px; height: 36px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+    .info-content strong { display: block; font-size: 0.68rem; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+    .info-content span { font-family: 'Noto Serif KR', serif; font-size: 0.9rem; color: var(--navy-deep); line-height: 1.8; }
+
+    /* CONTACT */
+    .contact { background: var(--navy-deep); text-align: center; padding: 140px 24px; }
+    .contact .section-title { color: var(--gold-light); }
+    .contact .section-label { text-align: center; }
+    .contact .section-divider { margin: 0 auto 48px; }
+    .contact-desc { font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 2.2; margin-bottom: 56px; }
+    .contact-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+    .contact-btn {
+      display: inline-flex; align-items: center; gap: 10px; padding: 16px 44px;
+      border: 1px solid var(--gold); color: var(--gold); text-decoration: none;
+      font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 0.2em;
+      transition: all 0.4s; position: relative; overflow: hidden;
+    }
+    .contact-btn::before { content: ''; position: absolute; inset: 0; background: var(--gold); transform: scaleY(0); transform-origin: bottom; transition: transform 0.4s; z-index: -1; }
+    .contact-btn:hover { color: var(--navy-deep); }
+    .contact-btn:hover::before { transform: scaleY(1); }
+    .contact-btn.secondary { border-color: rgba(212,168,67,0.35); color: rgba(212,168,67,0.65); }
+    .contact-btn.secondary::before { background: rgba(212,168,67,0.12); }
+    .contact-btn.secondary:hover { color: var(--gold); }
+
+    /* FOOTER */
+    footer {
+      background: #1a2530; padding: 36px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(212,168,67,0.12);
+    }
+    .footer-logo { font-family: 'Noto Serif KR', serif; font-size: 0.9rem; color: var(--gold); letter-spacing: 0.1em; }
+    .footer-copy { font-size: 0.7rem; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; }
+    .footer-blog a { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.85rem; color: rgba(212,168,67,0.45); text-decoration: none; letter-spacing: 0.1em; transition: color 0.3s; }
+    .footer-blog a:hover { color: var(--gold); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scrollPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      header { padding: 18px 24px; }
+      nav { display: none; }
+      .about-grid, .location-grid, .instructor-layout { grid-template-columns: 1fr; gap: 48px; }
+      .class-grid { grid-template-columns: 1fr; }
+      .about-circle { width: 220px; height: 220px; }
+      .about-circle-logo { width: 100px; }
+      .instructor-portrait { display: none; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-wrap">
+    <div>
+      <span class="logo-text">와이엔발레</span>
+      <span class="logo-sub">YN Ballet</span>
+    </div>
+  </div>
+  <nav>
+    <a href="#about">소개</a>
+    <a href="#classes">수업</a>
+    <a href="#schedule">시간표</a>
+    <a href="#instructor">강사</a>
+    <a href="#location">오시는 길</a>
+    <a href="#contact">문의</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-line top"></div>
+  <div class="hero-line bottom"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Elegance in Motion</p>
+    <img src="1773220291308_image.png" class="hero-logo-img" alt="와이엔발레 로고"
+         onerror="this.style.display='none'"/>
+    <h1 class="hero-title">와이엔발레</h1>
+    <p class="hero-title-en">YN &nbsp; Ballet</p>
+    <p class="hero-desc">
+      우아함과 예술이 만나는 공간<br/>
+      어린이부터 성인까지, 모든 분들을 위한<br/>
+      발레의 아름다운 세계로 초대합니다
+    </p>
+    <a href="#classes" class="hero-cta">수업 알아보기</a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <div class="about-circle">
+          <img src="1773220291308_image.png" class="about-circle-logo" alt="와이엔발레"
+               onerror="this.outerHTML='<div style=\'font-family:Cormorant Garamond,serif;font-size:1.2rem;color:var(--gold);letter-spacing:0.2em;\'>YN BALLET</div>'"/>
+        </div>
+      </div>
+      <div class="about-text">
+        <span class="section-label reveal">About YN Ballet</span>
+        <h2 class="section-title reveal reveal-delay-1">발레의 아름다움을<br/>일상에 담다</h2>
+        <div class="section-divider reveal reveal-delay-1"></div>
+        <p class="reveal reveal-delay-2">
+          와이엔발레는 전문적인 발레 교육을 통해 몸의 아름다움과 예술적 감수성을 키울 수 있는 공간입니다. 유아부터 성인까지, 모든 연령대의 학생들이 발레의 기초부터 심화 과정까지 체계적으로 배울 수 있습니다.
+        </p>
+        <p class="reveal reveal-delay-2">
+          단순한 운동을 넘어, 발레가 선사하는 우아함과 자신감을 통해 일상이 더욱 풍요로워지는 경험을 드립니다.
+        </p>
+        <div class="about-values reveal reveal-delay-3">
+          <div class="value-item">
+            <span class="value-num">5+</span>
+            <span class="value-label">운영 경력</span>
+          </div>
+          <div class="value-item">
+            <span class="value-num">100+</span>
+            <span class="value-label">수강생</span>
+          </div>
+          <div class="value-item">
+            <span class="value-num">6</span>
+            <span class="value-label">수업 종류</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLASSES -->
+<section class="classes" id="classes">
+  <div class="section-inner">
+    <span class="section-label reveal">Classes</span>
+    <h2 class="section-title reveal reveal-delay-1">수업 안내</h2>
+    <div class="section-divider reveal reveal-delay-1"></div>
+    <div class="class-grid">
+      <div class="class-card reveal">
+        <div class="class-num">01</div>
+        <div class="class-name">유아 발레</div>
+        <span class="class-name-en">Children's Ballet</span>
+        <p class="class-desc">4~7세를 위한 발레 입문 수업입니다. 음악과 놀이를 통해 자연스럽게 발레의 기초 동작과 리듬감을 익힙니다.</p>
+        <span class="class-tag">4~7세</span>
+        <span class="class-tag">입문</span>
+      </div>
+      <div class="class-card reveal reveal-delay-1">
+        <div class="class-num">02</div>
+        <div class="class-name">어린이 발레</div>
+        <span class="class-name-en">Kids Ballet</span>
+        <p class="class-desc">8~13세를 위한 체계적인 발레 기초 과정입니다. 바 워크와 센터 워크를 통해 올바른 발레 테크닉을 배웁니다.</p>
+        <span class="class-tag">8~13세</span>
+        <span class="class-tag">기초~중급</span>
+      </div>
+      <div class="class-card reveal reveal-delay-2">
+        <div class="class-num">03</div>
+        <div class="class-name">청소년 발레</div>
+        <span class="class-name-en">Teen Ballet</span>
+        <p class="class-desc">중·고등학생을 위한 심화 발레 과정입니다. 테크닉 향상과 표현력 개발에 중점을 둡니다.</p>
+        <span class="class-tag">중·고등</span>
+        <span class="class-tag">중급~고급</span>
+      </div>
+      <div class="class-card reveal">
+        <div class="class-num">04</div>
+        <div class="class-name">성인 입문</div>
+        <span class="class-name-en">Adult Beginner</span>
+        <p class="class-desc">발레가 처음인 성인을 위한 친절한 입문 과정입니다. 기초부터 차근차근, 부담 없이 시작할 수 있습니다.</p>
+        <span class="class-tag">성인</span>
+        <span class="class-tag">입문</span>
+      </div>
+      <div class="class-card reveal reveal-delay-1">
+        <div class="class-num">05</div>
+        <div class="class-name">성인 심화</div>
+        <span class="class-name-en">Adult Advanced</span>
+        <p class="class-desc">발레 경험이 있는 성인을 위한 심화 과정입니다. 표현력과 테크닉을 함께 발전시킵니다.</p>
+        <span class="class-tag">성인</span>
+        <span class="class-tag">중급~</span>
+      </div>
+      <div class="class-card reveal reveal-delay-2">
+        <div class="class-num">06</div>
+        <div class="class-name">포인트 슈즈</div>
+        <span class="class-name-en">Pointe Work</span>
+        <p class="class-desc">포인트 슈즈 착용 과정입니다. 충분한 기초 실력을 갖춘 학생을 대상으로 진행됩니다.</p>
+        <span class="class-tag">별도 상담</span>
+        <span class="class-tag">고급</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule" id="schedule">
+  <div class="section-inner">
+    <span class="section-label reveal">Timetable</span>
+    <h2 class="section-title reveal reveal-delay-1">수업 시간표</h2>
+    <div class="section-divider reveal reveal-delay-1"></div>
+    <div class="schedule-table-wrap reveal reveal-delay-2">
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time">10:00–11:00</td>
+            <td><span class="badge gold">성인 입문</span></td><td>—</td>
+            <td><span class="badge gold">성인 입문</span></td><td>—</td>
+            <td><span class="badge gold">성인 입문</span></td><td>—</td>
+          </tr>
+          <tr>
+            <td class="time">16:00–17:00</td>
+            <td><span class="badge soft">유아</span></td>
+            <td><span class="badge soft">어린이</span></td>
+            <td><span class="badge soft">유아</span></td>
+            <td><span class="badge soft">어린이</span></td>
+            <td><span class="badge soft">유아</span></td>
+            <td><span class="badge soft">유아</span></td>
+          </tr>
+          <tr>
+            <td class="time">17:00–18:00</td>
+            <td><span class="badge soft">어린이</span></td>
+            <td><span class="badge navy">청소년</span></td>
+            <td><span class="badge soft">어린이</span></td>
+            <td><span class="badge navy">청소년</span></td>
+            <td><span class="badge soft">어린이</span></td>
+            <td><span class="badge soft">어린이</span></td>
+          </tr>
+          <tr>
+            <td class="time">19:00–20:00</td><td>—</td>
+            <td><span class="badge gold">성인 심화</span></td><td>—</td>
+            <td><span class="badge gold">성인 심화</span></td><td>—</td><td>—</td>
+          </tr>
+          <tr>
+            <td class="time">20:00–21:00</td>
+            <td><span class="badge gold">성인 심화</span></td><td>—</td>
+            <td><span class="badge gold">성인 심화</span></td><td>—</td>
+            <td><span class="badge gold">성인 심화</span></td><td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px;font-size:0.78rem;color:var(--muted);letter-spacing:0.08em;">
+      ※ 시간표는 변경될 수 있습니다. 정확한 내용은 문의해 주세요.
+    </p>
+  </div>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="instructor" id="instructor">
+  <div class="section-inner">
+    <span class="section-label reveal">Instructor</span>
+    <h2 class="section-title reveal reveal-delay-1">원장 · 강사 소개</h2>
+    <div class="section-divider reveal reveal-delay-1"></div>
+    <div class="instructor-layout">
+      <div class="instructor-portrait reveal">
+        <div style="font-size:3.5rem;opacity:0.25;">🩰</div>
+        <span style="position:relative;z-index:1;">사진 등록 예정</span>
+      </div>
+      <div class="instructor-info reveal reveal-delay-1">
+        <h3>원장 강사</h3>
+        <span class="role">YN Ballet Director &amp; Principal Instructor</span>
+        <ul class="career-list">
+          <li>OO대학교 무용원 발레 전공 졸업</li>
+          <li>국립발레단 발레리나 역임</li>
+          <li>국내외 다수 무대 공연 경력</li>
+          <li>현 와이엔발레 원장 및 전임 강사</li>
+          <li>어린이부터 성인까지 다년간 발레 지도 경력</li>
+        </ul>
+       
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="location" id="location">
+  <div class="section-inner">
+    <div class="location-grid">
+      <div>
+        <span class="section-label reveal">Location</span>
+        <h2 class="section-title reveal reveal-delay-1">오시는 길</h2>
+        <div class="section-divider reveal reveal-delay-1"></div>
+        <ul class="info-list reveal reveal-delay-2">
+          <li>
+            <div class="info-icon">📍</div>
+            <div class="info-content">
+              <strong>주소</strong>
+              <span>서울특별시 ○○구 ○○로 ○○○<br/>○○빌딩 ○층</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-icon">🚇</div>
+            <div class="info-content">
+              <strong>지하철</strong>
+              <span>○○역 ○번 출구에서 도보 ○분</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-icon">🕐</div>
+            <div class="info-content">
+              <strong>운영 시간</strong>
+              <span>월~금 09:00 – 21:00<br/>토 09:00 – 17:00 / 일·공휴일 휴원</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-icon">🅿️</div>
+            <div class="info-content">
+              <strong>주차</strong>
+              <span>건물 내 주차 가능 (수강 시 1시간 무료)</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="map-placeholder reveal reveal-delay-2">
+        <div class="map-pin">📍</div>
+        <span class="map-label-txt">지도 삽입 예정</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <span class="section-label reveal">Contact</span>
+    <h2 class="section-title reveal reveal-delay-1" style="margin-bottom:16px;">수강 문의</h2>
+    <div class="section-divider reveal reveal-delay-1"></div>
+    <p class="contact-desc reveal reveal-delay-2">
+      수업에 대해 궁금하신 점이 있으시면 편하게 문의해 주세요.<br/>
+      네이버 블로그 또는 카카오톡으로 빠르게 답변 드립니다.
+    </p>
+    <div class="contact-links reveal reveal-delay-2">
+      <a href="https://blog.naver.com/ynballet2025" target="_blank" class="contact-btn">
+        📝 &nbsp; 네이버 블로그 방문
+      </a>
+      <a href="#" class="contact-btn secondary">
+        💬 &nbsp; 카카오톡 문의
+      </a>
+    </div>
+    <p style="font-size:0.75rem;color:rgba(212,168,67,0.3);letter-spacing:0.1em;" class="reveal reveal-delay-3">
+      전화번호 · 카카오톡 채널을 알려주시면 버튼에 연결해 드립니다
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">와이엔발레 &nbsp;·&nbsp; YN Ballet</div>
+  <div class="footer-copy">© 2025 YN Ballet. All rights reserved.</div>
+  <div class="footer-blog"><a href="https://blog.naver.com/ynballet2025" target="_blank">blog.naver.com/ynballet2025 →</a></div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
